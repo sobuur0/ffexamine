@@ -13,14 +13,14 @@ enum MediaFile {
 }
 
 struct ImageInfo {
-    var colorModel: String = ""
-    var dpiHeight: Int = 0
-    var dpiWidth: Int = 0
-    var depth: Int = 0
-    var hasAlpha: Bool = false
-    var pixelHeight: Int = 0
-    var pixelWidth: Int = 0
-    var profileName: String = ""
+    var colorModel: String?
+    var dpiHeight: Int?
+    var dpiWidth: Int?
+    var depth: Int?
+    var hasAlpha: Bool?
+    var pixelHeight: Int?
+    var pixelWidth: Int?
+    var profileName: String?
     
     static func inspectImageUrl(atInputUrl computedUrl: URL) -> Self{
         var imageInfo = ImageInfo()
@@ -87,5 +87,43 @@ struct ImageInfo {
             )
         }
         return imageInfo
+    }
+}
+
+func provideInspectionResult(for media: ImageInfo) -> String {
+    var imageData: [String] = ["Image info is as follows:\n"]
+    
+    let mediaType = MediaFile.image(media)
+    
+    switch mediaType {
+    
+    // Returns inspection result for supported Image types
+    case let .image(media):
+        if let colorModel = media.colorModel {
+            imageData.append("ColorModel-> \(colorModel)\n")
+        }
+        if let dpiHeight = media.dpiHeight {
+            imageData.append("Dpiheight-> \(dpiHeight)\n")
+        }
+        if let dpiWidth = media.dpiWidth {
+            imageData.append("DpiWidth-> \(dpiWidth)\n")
+        }
+        if let depth = media.depth {
+            imageData.append("Depth-> \(depth)\n")
+        }
+        if let hasAlpha = media.hasAlpha {
+            imageData.append("Does the image have Alpha-> \(hasAlpha)\n")
+        }
+        if let pixelHeight = media.pixelHeight {
+            imageData.append("PixelHeight-> \(pixelHeight)\n")
+        }
+        if let pixelWidth = media.pixelWidth {
+            imageData.append("PixelWidth-> \(pixelWidth)\n")
+        }
+        if let profileName = media.profileName {
+            imageData.append("ProfileName-> \(profileName)\n")
+        }
+        
+        return imageData.joined(separator: "")
     }
 }

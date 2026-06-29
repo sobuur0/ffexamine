@@ -58,9 +58,8 @@ struct FFExamine: ParsableCommand {
                         
                         // call a type method that inspects a given url and computes the values to the imageinfo properties and assign it to a constant
                         let imageInfo = ImageInfo.inspectImageUrl(atInputUrl: computedUrl)
-                        print(
-                            "Image info is as follows:\nColorModel-> \(imageInfo.colorModel)\nDpiHeight-> \(imageInfo.dpiHeight)\nDpiWidth-> \(imageInfo.dpiWidth)\nImageDepth-> \(imageInfo.depth)\nThis image hasAlpha-> \(imageInfo.hasAlpha)\nPixelHeight-> \(imageInfo.pixelHeight)\nPixelWidth-> \(imageInfo.pixelWidth)\nProfileName-> \(imageInfo.profileName)\n"
-                        )
+                        let inspectionResult = provideInspectionResult(for: imageInfo)
+                        print(inspectionResult)
                     } catch {
                         print(
                             error
@@ -73,6 +72,5 @@ struct FFExamine: ParsableCommand {
                 "Yo wyd. specify the folder path right fucking now"
             )
         }
-
     }
 }
