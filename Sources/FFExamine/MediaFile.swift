@@ -6,88 +6,9 @@
 //
 
 import Foundation
-import ImageIO
 
 enum MediaFile {
     case image(ImageInfo)
-}
-
-struct ImageInfo {
-    var colorModel: String?
-    var dpiHeight: Int?
-    var dpiWidth: Int?
-    var depth: Int?
-    var hasAlpha: Bool?
-    var pixelHeight: Int?
-    var pixelWidth: Int?
-    var profileName: String?
-    
-    static func inspectImageUrl(atInputUrl computedUrl: URL) -> Self{
-        var imageInfo = ImageInfo()
-        if let imageSource = CGImageSourceCreateWithURL(
-            computedUrl as CFURL,
-            nil
-        ) {
-            if let imageSourceCopyProperties =
-                CGImageSourceCopyPropertiesAtIndex(
-                    imageSource,
-                    0,
-                    nil
-                )
-            {
-                if let cpDict = imageSourceCopyProperties
-                    as? [String: Any]
-                {
-                    if let colorModel = cpDict["ColorModel"]
-                        as? String
-                    {
-                        imageInfo.colorModel = colorModel
-                    }
-                    if let dpiHeight = cpDict["DPIHeight"]
-                        as? Int
-                    {
-                        imageInfo.dpiHeight = dpiHeight
-                    }
-                    if let dpiWidth = cpDict["DPIWidth"] as? Int
-                    {
-                        imageInfo.dpiWidth = dpiWidth
-                    }
-                    if let depth = cpDict["Depth"] as? Int {
-                        imageInfo.depth = depth
-                    }
-                    if let hasAlpha = cpDict["HasAlpha"]
-                        as? Bool
-                    {
-                        imageInfo.hasAlpha = hasAlpha
-                    }
-                    if let pixelHeight = cpDict["PixelHeight"]
-                        as? Int
-                    {
-                        imageInfo.pixelHeight = pixelHeight
-                    }
-                    if let pixelWidth = cpDict["PixelWidth"]
-                        as? Int
-                    {
-                        imageInfo.pixelWidth = pixelWidth
-                    }
-                    if let profileName = cpDict["ProfileName"]
-                        as? String
-                    {
-                        imageInfo.profileName = profileName
-                    }
-                }
-            } else {
-                print(
-                    "Image source copy propertie are empty"
-                )
-            }
-        } else {
-            print(
-                "Image source is empty"
-            )
-        }
-        return imageInfo
-    }
 }
 
 func provideInspectionResult(for media: ImageInfo) -> String {
@@ -125,5 +46,20 @@ func provideInspectionResult(for media: ImageInfo) -> String {
         }
         
         return imageData.joined(separator: "")
+    }
+}
+
+func provideSize(of mediaFile: URL, at urlPath: String) {
+    do {
+        let sizeOfComputedUrl = try mediaFile.resourceValues(
+            forKeys: [URLResourceKey.fileSizeKey]
+        )
+       
+        print("\(urlPath) is of size \((sizeOfComputedUrl.fileSize ?? 0) / 1024) KB")
+        
+    } catch {
+        print(
+            error
+        )
     }
 }

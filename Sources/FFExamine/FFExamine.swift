@@ -1,7 +1,6 @@
 import ArgumentParser
 import Figlet
 import Foundation
-import ImageIO
 
 @main
 struct FFExamine: ParsableCommand {
@@ -35,7 +34,7 @@ struct FFExamine: ParsableCommand {
                 atPath: input
             )
             for content in contentsOfInputDirectry {
-                let computedUrl = URL(
+                let inputUrl = URL(
                     fileURLWithPath: input
                 )
                 .appendingPathComponent(
@@ -44,26 +43,22 @@ struct FFExamine: ParsableCommand {
 
                 if supportedFormats
                     .contains(
-                        computedUrl.pathExtension
+                        inputUrl.pathExtension
                             .lowercased()
                     )
                 {
-                    do {
-                        let sizeOfComputedUrl = try computedUrl.resourceValues(
-                            forKeys: [URLResourceKey.fileSizeKey]
-                        )
-                        print(
-                            "\(content) is of size \((sizeOfComputedUrl.fileSize ?? 0) / 1024) KB"
-                        )
-                        
+                    provideSize(of: inputUrl, at: content)
+                    
+                    switch inputUrl.pathExtension.lowercased() {
+                    // image formats
+                    case "png", "jpeg", "gif":
                         // call a type method that inspects a given url and computes the values to the imageinfo properties and assign it to a constant
-                        let imageInfo = ImageInfo.inspectImageUrl(atInputUrl: computedUrl)
+                        let imageInfo = ImageInfo.inspectImageUrl(atInputUrl: inputUrl)
+                        let memoryFootPrint = imageInfo.getImageMemoryFootPrint()
                         let inspectionResult = provideInspectionResult(for: imageInfo)
-                        print(inspectionResult)
-                    } catch {
-                        print(
-                            error
-                        )
+                        print(inspectionResult + "The Memory footprint of this image(which means the exact memory required to hold this image in memory) \(memoryFootPrint) MB\n")
+                    default:
+                        print("Type not currently supported")
                     }
                 }
             }
