@@ -85,7 +85,7 @@ struct ImageInfo {
         return imageInfo
     }
     
-    func getImageMemoryFootPrint() -> Int {
+    func getImageMemoryFootPrint() -> Double {
         var imageFootPrint: Int = 0
         
         //convert depth in bits to byte
@@ -101,7 +101,7 @@ struct ImageInfo {
             imageFootPrint =  (self.pixelWidth ?? 0) * (self.pixelHeight ?? 0) * pixel
         }
         
-        let imageFootPrintInMb = imageFootPrint / 1048576
-        return imageFootPrintInMb
+        let imageFootPrintInMb: Double = round((Double(imageFootPrint) / 1048576) * 100)
+        return imageFootPrintInMb / 100
     }
 }

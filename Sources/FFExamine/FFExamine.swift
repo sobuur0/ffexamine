@@ -56,7 +56,7 @@ struct FFExamine: ParsableCommand {
                         let imageInfo = ImageInfo.inspectImageUrl(atInputUrl: inputUrl)
                         let memoryFootPrint = imageInfo.getImageMemoryFootPrint()
                         let inspectionResult = provideInspectionResult(for: imageInfo)
-                        print(inspectionResult + "The Memory footprint of this image(which means the exact memory required to hold this image in memory) \(memoryFootPrint) MB\n")
+                        print(inspectionResult + "The Memory footprint of this image(which means the exact memory required to hold this image in memory) is \(memoryFootPrint) MB\n")
                     default:
                         print("Type not currently supported")
                     }
