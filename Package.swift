@@ -5,6 +5,9 @@ import PackageDescription
 
 let package = Package(
     name: "FFExamine",
+    platforms: [
+        .macOS(.v13) // Forces the compiler to target macOS 13 runtime libraries
+    ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.0.0"),
         .package(url: "https://github.com/apple/example-package-figlet", branch: "main"),
